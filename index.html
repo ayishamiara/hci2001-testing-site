@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Card Testing App</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<style>
+  /* Basic Reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body, html {
+    height: 100%;
+  }
+
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #ececec;
+    text-align: center;
+  }
+
+  header {
+    width: 100%;
+    padding: 6vh 0;
+  }
+
+  header h1 {
+    font-size: 2em;
+    color: #333;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 5vh;
+    margin-left: 3vh;
+    margin-right: 3vh;
+  }
+
+  #description {
+    flex: 1;
+    margin: 0 20vh 0 0.5vh;
+    padding: 2vw;
+    text-align: justify;
+    font-size: 1.5em;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  #image {
+    flex: 1;
+    padding: 2vw;
+    /* Add styles for the image container */
+  }
+  .button {
+    float: left;
+    margin: 2vh 0 0 0;
+    padding: 1vh;
+    display: block;
+    background-color: #7a7a7a;
+    font-size: 3vh;
+    text-align: center;
+    color: #dfdfdf;
+  }
+
+  .button:hover {
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    #description, #image {
+      width: 80%; /* Full width on smaller screens */
+    }
+  }
+  .task-display {
+    display: none; /* Hidden by default */
+    margin: 15vh 15vh 0;
+    font-size: 5vh;
+    padding: 2vh;
+  }
+
+  .start-instructions {
+    margin-top: 4vh;
+    font-size: 3vh;
+  }
+
+  /* Add other styles as needed */
+
+</style>
+</head>
+<body>
+    <header>
+        <h1 id="header">Welcome to the Online Shopping Product Card Testing App</h1>
+    </header>
+    <div class="container">
+        <div id="description">
+            <p class="instructions">
+                You will be given a task and after understanding the task, your reaction time and accuracy are measured.
+            </p>
+            <span class="button" onclick="loadExperiment()">Start Experiment</span>
+        </div>
+          <div><img src="image 1.png" id="image"></div>
+        </div>
+        <div id="task" class="task-display" onclick="startExperiment()">
+          <p>For the next series of products seen on the page,<br> click on the product "Mouse 205"</p>
+          <p class="start-instructions">Click mouse to start</p>
+      </div>
+
+<script>
+  function loadExperiment() {
+    // Hide the header, description, image, and display the task instructions
+    document.getElementById('header').style.display = 'none';
+    document.getElementById('description').style.display = 'none';
+    document.getElementById('image').style.display = 'none';
+    document.getElementById('task').style.display = 'block';
+  }
+
+  function startExperiment() {
+    // This is where you would handle the start of the actual experiment
+    document.getElementById('task').style.display = 'none';
+    
+    showCards();
+    
+  }
+  function showCards() {
+    // This function will create the layout for the product cards and display them
+    const cardsHTML = `
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+      <!-- Product Card 1 -->
+      <div class="bg-white shadow-md overflow-hidden">
+        <img class="w-full" src="image 2.png" alt="mouse">
+        <div class="p-4">
+          <h3 class="font-bold text-lg">Mouse 201</h3>
+          <div class="flex justify-between items-center mt-3">
+            <span class="text-red-500 font-bold">₱66</span>
+            <span class="text-gray-600 text-sm">59 sold</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Product Card 2 -->
+      <div class="bg-white shadow-md overflow-hidden">
+        <img class="w-full" src="image 2.png" alt="mouse">
+        <div class="p-4">
+          <h3 class="font-bold text-lg">Mouse 205</h3>
+          <div class="flex justify-between items-center mt-3">
+            <span class="text-red-500 font-bold">₱79</span>
+            <span class="text-gray-600 text-sm">127 sold</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Product Card 3 -->
+      <div class="bg-white shadow-md overflow-hidden">
+        <img class="w-full" src="image 2.png" alt="mouse">
+        <div class="p-4">
+          <h3 class="font-bold text-lg">Mouse 206</h3>
+          <div class="flex justify-between items-center mt-3">
+            <span class="text-red-500 font-bold">₱96</span>
+            <span class="text-gray-600 text-sm">5.3k sold</span>
+          </div>
+        </div>
+      </div>
+    <!-- Product Card 4 -->
+    <div class="bg-white shadow-md overflow-hidden">
+      <img class="w-full" src="image 2.png" alt="mouse">
+      <div class="p-4">
+        <h3 class="font-bold text-lg"Mouse 207</h3>
+          <div class="flex justify-between items-center mt-3">
+            <span class="text-red-500 font-bold">₱96</span>
+            <span class="text-gray-600 text-sm">5.3k sold</span>
+          </div>
+        </div>
+      </div>
+    <!-- Product Card 5 -->
+      <div class="bg-white shadow-md overflow-hidden">
+        <img class="w-full" src="image 2.png" alt="mouse">
+        <div class="p-4">
+          <h3 class="font-bold text-lg">Mouse 205</h3>
+          <div class="flex justify-between items-center mt-3">
+            <span class="text-red-500 font-bold">₱96</span>
+            <span class="text-gray-600 text-sm">5.3k sold</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    
+  </div>
+    `;
+    document.body.innerHTML = cardsHTML;
+  }
+  function selectProduct(productId) {
+    // Placeholder function for when a product is selected
+    alert(productId + ' selected');
+    // Here you would handle the logic for when a product card is selected
+  }
+  function time(){
+
+  }
+</script>
+
+</body>
+</html>
