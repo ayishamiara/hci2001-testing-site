@@ -132,68 +132,71 @@
   function showCards() {
     // This function will create the layout for the product cards and display them
     const cardsHTML = `
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-      <!-- Product Card 1 -->
-      <div class="bg-white shadow-md overflow-hidden">
-        <img class="w-full" src="image 2.png" alt="mouse">
-        <div class="p-4">
-          <h3 class="font-bold text-lg">Mouse 201</h3>
-          <div class="flex justify-between items-center mt-3">
-            <span class="text-red-500 font-bold">₱66</span>
-            <span class="text-gray-600 text-sm">59 sold</span>
+    <div class="flex justify-center items-center min-h-screen">
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mx-8 my-4">
+
+        <!-- Product Card 1 -->
+        <div class="bg-white shadow-md overflow-hidden flex flex-col h-full" onclick="wrongCard(event)">
+          <img class="w-full" src="image 2.png" alt="mouse">
+          <div class="p-2 pt-4 flex-1 flex flex-col justify-between text-left"> <!-- This makes it a flex container with vertical direction -->
+            <h3 class="text-lg mb-4">Mouse 207</h3> <!-- This is the product title -->
+            <div class="flex justify-between items-end pt-4"> <!-- This aligns the price and sold info at the bottom -->
+              <span class="text-red-500">₱66</span> <!-- This is the price -->
+              <span class="text-gray-600 text-sm">59 sold</span> <!-- This is the amount sold -->
+            </div>
           </div>
         </div>
-      </div>
-      
-      <!-- Product Card 2 -->
-      <div class="bg-white shadow-md overflow-hidden">
-        <img class="w-full" src="image 2.png" alt="mouse">
-        <div class="p-4">
-          <h3 class="font-bold text-lg">Mouse 205</h3>
-          <div class="flex justify-between items-center mt-3">
-            <span class="text-red-500 font-bold">₱79</span>
-            <span class="text-gray-600 text-sm">127 sold</span>
+        
+        <!-- Product Card 2 -->
+        <div class="bg-white shadow-md overflow-hidden flex flex-col h-full" onclick="wrongCard(event)">
+          <img class="w-full" src="image 2.png" alt="mouse">
+          <div class="p-2 pt-4 flex-1 flex flex-col justify-between text-left"> <!-- This makes it a flex container with vertical direction -->
+            <h3 class="text-lg mb-4">Mouse 206</h3> <!-- This is the product title -->
+            <div class="flex justify-between items-end pt-4"> <!-- This aligns the price and sold info at the bottom -->
+              <span class="text-red-500">₱79</span> <!-- This is the price -->
+              <span class="text-gray-600 text-sm">59 sold</span> <!-- This is the amount sold -->
+            </div>
           </div>
         </div>
-      </div>
-      
-      <!-- Product Card 3 -->
-      <div class="bg-white shadow-md overflow-hidden">
-        <img class="w-full" src="image 2.png" alt="mouse">
-        <div class="p-4">
-          <h3 class="font-bold text-lg">Mouse 206</h3>
-          <div class="flex justify-between items-center mt-3">
-            <span class="text-red-500 font-bold">₱96</span>
-            <span class="text-gray-600 text-sm">5.3k sold</span>
+        
+        <!-- Product Card 3 -->
+        <div class="bg-white shadow-md overflow-hidden flex flex-col h-full" onclick="wrongCard(event)">
+          <img class="w-full" src="image 2.png" alt="mouse">
+          <div class="p-2 pt-4 flex-1 flex flex-col justify-between text-left"> <!-- This makes it a flex container with vertical direction -->
+            <h3 class="text-lg mb-4">Mouse 206</h3> <!-- This is the product title -->
+            <div class="flex justify-between items-end pt-4"> <!-- This aligns the price and sold info at the bottom -->
+              <span class="text-red-500">₱96</span> <!-- This is the price -->
+              <span class="text-gray-600 text-sm">5.3k sold</span> <!-- This is the amount sold -->
+            </div>
           </div>
         </div>
-      </div>
-    <!-- Product Card 4 -->
-    <div class="bg-white shadow-md overflow-hidden">
-      <img class="w-full" src="image 2.png" alt="mouse">
-      <div class="p-4">
-        <h3 class="font-bold text-lg"Mouse 207</h3>
-          <div class="flex justify-between items-center mt-3">
-            <span class="text-red-500 font-bold">₱96</span>
-            <span class="text-gray-600 text-sm">5.3k sold</span>
+
+        <!-- Product Card 4 -->
+        <div class="bg-white shadow-md overflow-hidden flex flex-col h-full" onclick="wrongCard(event)">
+          <img class="w-full" src="image 2.png" alt="mouse">
+          <div class="p-2 pt-4 flex-1 flex flex-col justify-between text-left"> <!-- This makes it a flex container with vertical direction -->
+            <h3 class="text-lg mb-4">Mouse 201</h3> <!-- This is the product title -->
+            <div class="flex justify-between items-end pt-4"> <!-- This aligns the price and sold info at the bottom -->
+              <span class="text-red-500">₱66</span> <!-- This is the price -->
+              <span class="text-gray-600 text-sm">59 sold</span> <!-- This is the amount sold -->
+            </div>
           </div>
         </div>
-      </div>
-    <!-- Product Card 5 -->
-      <div class="bg-white shadow-md overflow-hidden">
-        <img class="w-full" src="image 2.png" alt="mouse">
-        <div class="p-4">
-          <h3 class="font-bold text-lg">Mouse 205</h3>
-          <div class="flex justify-between items-center mt-3">
-            <span class="text-red-500 font-bold">₱96</span>
-            <span class="text-gray-600 text-sm">5.3k sold</span>
+
+        <!-- Product Card 5 -->
+        <div class="bg-white shadow-md overflow-hidden flex flex-col h-full" onclick="correctCard(event)">
+          <img class="w-full" src="image 2.png" alt="mouse">
+          <div class="p-2 pt-4 flex-1 flex flex-col justify-between text-left"> <!-- This makes it a flex container with vertical direction -->
+            <h3 class="text-lg mb-4">Mouse 205</h3> <!-- This is the product title -->
+            <div class="flex justify-between items-end pt-4"> <!-- This aligns the price and sold info at the bottom -->
+              <span class="text-red-500">₱96</span> <!-- This is the price -->
+              <span class="text-gray-600 text-sm">5.3k sold</span> <!-- This is the amount sold -->
+            </div>
           </div>
         </div>
+
       </div>
     </div>
-    </div>
-    
-  </div>
     `;
     document.body.innerHTML = cardsHTML;
   }
@@ -202,9 +205,29 @@
     alert(productId + ' selected');
     // Here you would handle the logic for when a product card is selected
   }
-  function time(){
+  function correctCard(event) {
+    let card = event.currentTarget;
+    card.classList.remove('bg-white');
+    card.classList.add('bg-green-500');
+    
+    setTimeout(function() {
+        card.classList.remove('bg-green-500');
+        card.classList.add('bg-white');
+        startExperiment();
+    }, 2000);
+}
 
-  }
+function wrongCard(event) {
+    let card = event.currentTarget;
+    card.classList.remove('bg-white');
+    card.classList.add('bg-red-500');
+
+    setTimeout(function() {
+        card.classList.remove('bg-red-500');
+        card.classList.add('bg-white');
+        startExperiment();
+    }, 2000);
+}
 </script>
 
 </body>
