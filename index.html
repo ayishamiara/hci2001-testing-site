@@ -137,30 +137,42 @@
     showCards();
     
   }
-  function generateCard(product) {
-    return `
-      <div class="bg-white shadow-md overflow-hidden flex flex-col h-full" onclick="${product.correct ? 'correctCard(event)' : 'wrongCard(event)'}">
-        <img class="w-full" src="image 2.png" alt="${product.name}">
-        <div class="p-2 pt-4 flex-1 flex flex-col justify-between text-left">
-          <h3 class="text-lg mb-4">${product.name}</h3>
-          <div class="flex justify-between items-end pt-4">
-            <span class="text-red-500">₱${product.price}</span>
-            <span class="text-gray-600 text-sm">${product.sold} sold</span>
-          </div>
+// Define the available options for color, size, and positioning globally
+const colors = ['red', 'orange', 'green', 'blue', 'black'];
+const sizes = ['12px', '14px', '16px', '18px'];
+const positions = ['upper-left', 'upper-right', 'lower-left', 'lower-right', 'middle'];
+
+function generateCard(product, color, size, position) {
+  return `
+    <div class="bg-white shadow-md overflow-hidden flex flex-col h-full" style="color: ${color}; font-size: ${size}; text-align: ${position};" onclick="${product.correct ? 'correctCard(event)' : 'wrongCard(event)'}">
+      <img class="w-full" src="image 2.png" alt="${product.name}">
+      <div class="p-2 pt-4 flex-1 flex flex-col justify-between text-left">
+        <h3 class="text-lg mb-4" style="color: ${color};">${product.name}</h3>
+        <div class="flex justify-between items-end pt-4">
+          <span class="text-red-500">₱${product.price}</span>
+          <span class="text-gray-600 text-sm">${product.sold} sold</span>
         </div>
       </div>
-    `;
-  }
-  function showCards() {
-    let cardsHTML = '<div class="flex justify-center items-center min-h-screen"><div class="grid grid-cols-1 md:grid-cols-5 gap-4 mx-8 my-4">';
+    </div>
+  `;
+}
 
-    products.forEach(product => {
-      cardsHTML += generateCard(product);
-    });
+function showCards() {
+  let cardsHTML = '<div class="flex justify-center items-center min-h-screen"><div class="grid grid-cols-1 md:grid-cols-5 gap-4 mx-8 my-4">';
 
-    cardsHTML += '</div></div>';
-    document.body.innerHTML = cardsHTML;
-  }
+  // Randomly select color, size, and position for the row
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+  const randomSize = sizes[Math.floor(Math.random() * sizes.length)];
+  const randomPosition = positions[Math.floor(Math.random() * positions.length)];
+
+  products.forEach(product => {
+    cardsHTML += generateCard(product, randomColor, randomSize, randomPosition);
+  });
+
+  cardsHTML += '</div></div>';
+  document.body.innerHTML = cardsHTML;
+}
+
   function shuffle(array) {
     let currentIndex = array.length-1,  randomIndex;
 
