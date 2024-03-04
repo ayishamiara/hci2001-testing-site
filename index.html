@@ -137,15 +137,18 @@
     showCards();
     
   }
-  function generateCard(product) {
+  function generateCard(product, namePosition, nameColor, nameFontSize, pricePosition, priceColor, priceFontSize, soldColor) {
+    // Sample call:
+    // generateCard(product, "position: absolute; bottom: 0; left: 0;", "blue", "20px", "position: absolute; top: 0; right: 0;", "green", "15px", "red");
+    // We can create a list of parameter values and iterate over it to generate cards
     return `
       <div class="bg-white shadow-md overflow-hidden flex flex-col h-full" onclick="${product.correct ? 'correctCard(event)' : 'wrongCard(event)'}">
         <img class="w-full" src="image 2.png" alt="${product.name}">
         <div class="p-2 pt-4 flex-1 flex flex-col justify-between text-left">
-          <h3 class="text-lg mb-4">${product.name}</h3>
+          <h3 class="text-lg mb-4" style="color: ${nameColor}; ${namePosition}; font-size: ${nameFontSize};">${product.name}</h3>
           <div class="flex justify-between items-end pt-4">
-            <span class="text-red-500">₱${product.price}</span>
-            <span class="text-gray-600 text-sm">${product.sold} sold</span>
+            <span class="text-red-500" style="color: ${priceColor}; ${pricePosition}; font-size: ${priceFontSize};">₱${product.price}</span>
+            <span class="text-gray-600 text-sm" style="color: ${soldColor};">${product.sold} sold</span>
           </div>
         </div>
       </div>
