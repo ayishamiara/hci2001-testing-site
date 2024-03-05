@@ -119,6 +119,14 @@
   let positionTitle =0;
   let config = 0;
 
+  const colors = ['red', 'orange', 'green', 'blue', 'black'];
+  const sizes = ['12px', '14px', '16px', '18px'];
+  const positions = ['upper-left', 'upper-right', 'lower-left', 'lower-right', 'middle'];
+
+  let colorRand = shuffle(colors);
+  let sizeRand = shuffle(sizes);
+  let positionRand = shuffle(positions);
+
   let products = [
     { name: 'Mouse 201', price: 66, sold: '59', correct: false },
     { name: 'Mouse 205', price: 79, sold: '127', correct: true },
@@ -134,10 +142,6 @@
     document.getElementById('image').style.display = 'none';
     document.getElementById('task').style.display = 'block';
   }
-
-const colors = ['red', 'orange', 'green', 'blue', 'black'];
-const sizes = ['12px', '14px', '16px', '18px'];
-const positions = ['upper-left', 'upper-right', 'lower-left', 'lower-right', 'middle'];
 
   function startExperiment() {
     // This is where you would handle the start of the actual experiment
@@ -167,36 +171,21 @@ const positions = ['upper-left', 'upper-right', 'lower-left', 'lower-right', 'mi
   function showCards() {
     let cardsHTML = '<div class="flex justify-center items-center min-h-screen"><div class="grid grid-cols-1 md:grid-cols-5 gap-4 mx-8 my-4">';
 
-    // // Randomly select one aspect to change
-    // const randomAspect = Math.floor(Math.random() * 3); // 0 for color, 1 for size, 2 for position
-
-    // // Get a random value for the selected aspect
-    // let aspectValue;
-    // switch (randomAspect) {
-    //     case 0:
-    //         aspectValue = colors[Math.floor(Math.random() * colors.length)];
-    //         break;
-    //     case 1:
-    //         aspectValue = sizes[Math.floor(Math.random() * sizes.length)];
-    //         break;
-    //     case 2:
-    //         aspectValue = positions[Math.floor(Math.random() * positions.length)];
-    //         break;
-    // }
+    console.log(colorRand)
     
     if(config < colors.length + sizes.length + positions.length){
       if(colorTitle < colors.length){
-        aspectValue = colors[Math.floor(Math.random() * colors.length)];
+        aspectValue = colorRand[colorTitle];
         aspectType = 'color';
         colorTitle++;
       }
       else if (sizeTitle < sizes.length){
-        aspectValue = sizes[Math.floor(Math.random() * sizes.length)];  
+        aspectValue = sizeRand[sizeTitle];  
         aspectType = 'size';
         sizeTitle++;
       }
       else if (positionTitle < positions.length){
-        aspectValue = positions[Math.floor(Math.random() * positions.length)];
+        aspectValue = positionRand[positionTitle];
         aspectType = 'position';
         positionTitle++;
       }
