@@ -93,6 +93,38 @@
 
   /* Add other styles as needed */
 
+  .title-top-left {
+    padding-left: none;
+  }
+  
+  .title-top-right {
+    padding-left: 90px;
+  }
+  
+  .title-middle {
+    position: absolute;
+    left : 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .title-bottom-left {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+  }
+  
+  .title-bottom-right {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+  }
+  
+  /* Ensure that the parent container of the title is relative to position the titles absolutely */
+  .card-container {
+    position: relative;
+  }
+  
+
 </style>
 </head>
 <body>
@@ -119,14 +151,6 @@
   let positionTitle =0;
   let config = 0;
 
-  const colors = ['red', 'orange', 'green', 'blue', 'black'];
-  const sizes = ['12px', '14px', '16px', '18px'];
-  const positions = ['upper-left', 'upper-right', 'lower-left', 'lower-right', 'middle'];
-
-  let colorRand = shuffle(colors);
-  let sizeRand = shuffle(sizes);
-  let positionRand = shuffle(positions);
-
   let products = [
     { name: 'Mouse 201', price: 66, sold: '59', correct: false },
     { name: 'Mouse 205', price: 79, sold: '127', correct: true },
@@ -143,6 +167,10 @@
     document.getElementById('task').style.display = 'block';
   }
 
+const colors = ['red', 'orange', 'green', 'blue', 'black'];
+const sizes = ['12px', '14px', '16px', '18px'];
+const positions = ['upper-left', 'upper-right', 'lower-left', 'lower-right', 'middle'];
+
   function startExperiment() {
     // This is where you would handle the start of the actual experiment
     document.getElementById('task').style.display = 'none';
@@ -150,15 +178,32 @@
     showCards();
     
   }
-  function generateCard(product, namePosition, nameColor, nameFontSize, pricePosition, priceColor, priceFontSize, soldColor, soldFontSize) {
-    // Sample call:
-    // generateCard(product, "position: absolute; bottom: 0; left: 0;", "blue", "20px", "position: absolute; top: 0; right: 0;", "green", "15px", "red");
-    // We can create a list of parameter values and iterate over it to generate cards
+  
+function generateCard(product, namePosition, nameColor, nameFontSize, pricePosition, priceColor, priceFontSize, soldColor, soldFontSize) {
+    let positionClass = "";
+    switch (namePosition) {
+        case 'upper-left':
+            positionClass = "title-top-left";
+            break;
+        case 'upper-right':
+            positionClass = "title-top-right";
+            break;
+        case 'middle':
+            positionClass = "title-middle";
+            break;
+        case 'lower-left':
+            positionClass = "title-bottom-left";
+            break;
+        case 'lower-right':
+            positionClass = "title-bottom-right";
+            break;
+    }
+
     return `
-      <div class="bg-white shadow-md overflow-hidden flex flex-col h-full" onclick="${product.correct ? 'correctCard(event)' : 'wrongCard(event)'}">
+      <div class="card-container bg-white shadow-md overflow-hidden flex flex-col h-full" onclick="${product.correct ? 'correctCard(event)' : 'wrongCard(event)'}">
         <img class="w-full" src="image 2.png" alt="${product.name}">
         <div class="p-2 pt-4 flex-1 flex flex-col justify-between text-left">
-          <h3 class="mb-4" style="color: ${nameColor}; ${namePosition}; font-size: ${nameFontSize};">${product.name}</h3>
+          <h3 class="${positionClass}" style="color: ${nameColor}; font-size: ${nameFontSize};">${product.name}</h3>
           <div class="flex justify-between items-end pt-4">
             <span class="text-red-500" style="color: ${priceColor}; ${pricePosition}; font-size: ${priceFontSize};">₱${product.price}</span>
             <span class="text-gray-600" style="color: ${soldColor}; font-size: ${soldFontSize};">${product.sold} sold</span>
@@ -166,26 +211,42 @@
         </div>
       </div>
     `;
-  }
+}
+
 
   function showCards() {
     let cardsHTML = '<div class="flex justify-center items-center min-h-screen"><div class="grid grid-cols-1 md:grid-cols-5 gap-4 mx-8 my-4">';
 
-    console.log(colorRand)
+    // // Randomly select one aspect to change
+    // const randomAspect = Math.floor(Math.random() * 3); // 0 for color, 1 for size, 2 for position
+
+    // // Get a random value for the selected aspect
+    // let aspectValue;
+    // switch (randomAspect) {
+    //     case 0:
+    //         aspectValue = colors[Math.floor(Math.random() * colors.length)];
+    //         break;
+    //     case 1:
+    //         aspectValue = sizes[Math.floor(Math.random() * sizes.length)];
+    //         break;
+    //     case 2:
+    //         aspectValue = positions[Math.floor(Math.random() * positions.length)];
+    //         break;
+    // }
     
     if(config < colors.length + sizes.length + positions.length){
       if(colorTitle < colors.length){
-        aspectValue = colorRand[colorTitle];
+        aspectValue = colors[Math.floor(Math.random() * colors.length)];
         aspectType = 'color';
         colorTitle++;
       }
       else if (sizeTitle < sizes.length){
-        aspectValue = sizeRand[sizeTitle];  
+        aspectValue = sizes[Math.floor(Math.random() * sizes.length)];  
         aspectType = 'size';
         sizeTitle++;
       }
       else if (positionTitle < positions.length){
-        aspectValue = positionRand[positionTitle];
+        aspectValue = positions[Math.floor(Math.random() * positions.length)];
         aspectType = 'position';
         positionTitle++;
       }
