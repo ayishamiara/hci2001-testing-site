@@ -92,6 +92,20 @@
   }
 
   /* Add other styles as needed */
+	.results-container {
+		text-align: center;
+	}
+
+	.centered-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 20px;
+	}
+	
+	.gif {
+		width: 80%;
+	}
 
 </style>
 </head>
@@ -126,7 +140,7 @@
   let colorRand = [];
   let sizeRand = [];
 
-  for(i = 0; i < 3; i++){
+  for(i = 0; i < 1; i++){
     colorRand = colorRand.concat(shuffle(colors));
     sizeRand = sizeRand.concat(shuffle(sizes));
   }
@@ -370,41 +384,48 @@
     return generateCSVContent(headers, dataRows);
   }
 
-  function showResults(){
-    let reactionTimeCSVUri = generateReactionTimeCSV();
-    let reactionTimeLink = document.createElement("a");
-    reactionTimeLink.href = reactionTimeCSVUri;
-    reactionTimeLink.download = "title_reaction_times.csv";
-    document.body.appendChild(reactionTimeLink);
-    reactionTimeLink.click();
+	function showResults() {
+		// Generate and download CSV for reaction times
+		let reactionTimeCSVUri = generateReactionTimeCSV();
+		let reactionTimeLink = document.createElement("a");
+		reactionTimeLink.href = reactionTimeCSVUri;
+		reactionTimeLink.download = "title_reaction_times.csv";
+		document.body.appendChild(reactionTimeLink);
+		reactionTimeLink.click();
 
-    // Generate and download CSV for accuracy
-    let accuracyCSVUri = generateAccuracyCSV(calculateAccuracy());
-    let accuracyLink = document.createElement("a");
-    accuracyLink.href = accuracyCSVUri;
-    accuracyLink.download = "title_accuracy_results.csv";
-    document.body.appendChild(accuracyLink);
-    accuracyLink.click();
+		// Generate and download CSV for accuracy
+		let accuracyCSVUri = generateAccuracyCSV(calculateAccuracy());
+		let accuracyLink = document.createElement("a");
+		accuracyLink.href = accuracyCSVUri;
+		accuracyLink.download = "title_accuracy_results.csv";
+		document.body.appendChild(accuracyLink);
+		accuracyLink.click();
 
-    //TO SHOW INTERFACE FOR RESULTS
-    document.getElementById('card-test').style.display = 'none';
-    document.body.innerHTML = '<div class="results-container max-w-4xl mx-auto py-8 px-4"><h2 class="text-2xl font-bold mb-4">Your Results</h2><div id="resultsList" class="flex flex-col"></div></div>';
+		// Hide the test page and display the instructional result page
+		document.getElementById('card-test').style.display = 'none';
+		document.body.innerHTML = `
+			<div class="results-container max-w-4xl mx-auto py-8 px-4">
+				<h2 class="text-2xl font-bold mb-4">Congratulations, You are done!</h2>
+				<div class="centered-content">
+					<div class="gif-container">
+						<img src="yippee.gif" alt="Congratulations">
+					</div>
+					<div class="instructions-container">
+						<img src="instructions.png" alt="Instructions">
+					</div>
+				</div>
+				<p>Kindly download the prompted files:</p>
+				<p>(Also please <b>allow</b> for multiple downloaded files)</p>
+				<br>
+				<ul>
+					<li><a href="${reactionTimeCSVUri}" download="title_reaction_times.csv">Download Reaction Time CSV</a></li>
+					<li><a href="${accuracyCSVUri}" download="title_accuracy_results.csv">Download Accuracy CSV</a></li>
+				</ul><br>
+				<p>Don't forget to send your results to the researcher, please. Thank you so much!</p>
+			</div>
+		`;
+	}
 
-    // Container for results
-    const resultsList = document.getElementById('resultsList');
-
-    // Generating HTML content for each reaction time
-    arrayOfTimes[1].forEach((time, index) => {
-      const config = arrayOfTimes[0][index];
-      const timeInSeconds = (time / 1000).toFixed(2); // Convert milliseconds to seconds, round to 2 decimal places
-      
-      const resultItem = document.createElement("div");
-      resultItem.classList.add("p-4", "border", "border-gray-300", "rounded-lg", "mb-2", "flex", "justify-between", "items-center");
-      resultItem.innerHTML = `<span>Configuration: ${config} - Reaction Time: ${timeInSeconds} seconds</span>`;
-      
-      resultsList.appendChild(resultItem);
-    });
-  }
 
 </script>
 
