@@ -101,17 +101,19 @@
     </header>
     <div class="container">
         <div id="description">
-            <p class="instructions">
-                You will be given a task and after understanding the task, your reaction time and accuracy are measured.
-            </p>
-            <span class="button" onclick="loadExperiment()">Start Experiment</span>
+          <p class="instructions">
+              You will be given a task and after understanding the task, your reaction time and accuracy are measured.
+          </p>
+          <span class="button" onclick="loadExperiment()">Start Experiment</span>
         </div>
-          <div><img src="image 1.png" id="image"></div>
+        <div>
+          <img src="image 1.png" id="image">
         </div>
-        <div id="task" class="task-display" onclick="startExperiment()">
-          <p>For the next series of products seen on the page,<br> click on the product "Mouse 205"</p>
-          <p class="start-instructions">Click mouse to start</p>
-      </div>
+    </div>
+    <div id="task" class="task-display" onclick="startExperiment()">
+      <p>For the next series of products seen on the page,<br> click on the product "Mouse 205"</p>
+      <p class="start-instructions">Click mouse to start</p>
+    </div>
 
 <script>
   let colorTitle = 0;
@@ -126,6 +128,12 @@
   let colorRand = shuffle(colors);
   let sizeRand = shuffle(sizes);
   let positionRand = shuffle(positions);
+
+  let startTime; 
+  arrayOfTimes = [[],[]];
+  arrayOfTimes[0] = colorRand.concat(sizeRand, positionRand);
+
+  console.log(arrayOfTimes);
 
   let products = [
     { name: 'Mouse 201', price: 66, sold: '59', correct: false },
@@ -148,7 +156,6 @@
     document.getElementById('task').style.display = 'none';
 
     showCards();
-    
   }
   function generateCard(product, namePosition, nameColor, nameFontSize, pricePosition, priceColor, priceFontSize, soldColor, soldFontSize) {
     // Sample call:
@@ -169,6 +176,7 @@
   }
 
   function showCards() {
+    startTime = new Date().getTime();
     let cardsHTML = '<div class="flex justify-center items-center min-h-screen"><div class="grid grid-cols-1 md:grid-cols-5 gap-4 mx-8 my-4">';
 
     console.log(colorRand)
@@ -191,20 +199,24 @@
       }
       config++;
     }
+    else{//put an ELSE statement here to exit the testing loop and go to the results display page
+      
+    }
+    
 
     // Iterate through each product and generate a card with the selected aspect changed
     products.forEach(product => {
-        // Adjust the parameters based on the selected aspect
-        const namePosition = aspectType === 'position' ? aspectValue : "none"; // Only change position if aspect is position
-        const nameColor = aspectType === 'color' ? aspectValue : "black"; // Only change color if aspect is color
-        const nameFontSize = aspectType === 'size' ? aspectValue : "14px"; // Only change size if aspect is size
-        const pricePosition = "none"; // Keep price position unchanged
-        const priceColor = "red"; // Keep price color unchanged
-        const priceFontSize = "12px"; // Keep price size unchanged
-        const soldFontSize = "12px";
-        const soldColor = "black"; // Keep sold color unchanged
-        
-        cardsHTML += generateCard(product, namePosition, nameColor, nameFontSize, pricePosition, priceColor, priceFontSize, soldColor, soldFontSize);
+      // Adjust the parameters based on the selected aspect
+      const namePosition = aspectType === 'position' ? aspectValue : "none"; // Only change position if aspect is position
+      const nameColor = aspectType === 'color' ? aspectValue : "black"; // Only change color if aspect is color
+      const nameFontSize = aspectType === 'size' ? aspectValue : "14px"; // Only change size if aspect is size
+      const pricePosition = "none"; // Keep price position unchanged
+      const priceColor = "red"; // Keep price color unchanged
+      const priceFontSize = "12px"; // Keep price size unchanged
+      const soldFontSize = "12px";
+      const soldColor = "black"; // Keep sold color unchanged
+      
+      cardsHTML += generateCard(product, namePosition, nameColor, nameFontSize, pricePosition, priceColor, priceFontSize, soldColor, soldFontSize);
     });
 
     cardsHTML += '</div></div>';
@@ -227,6 +239,7 @@
 
     return array;
   }
+
   function formatNumberAsK(number) {
     if (number>1000){
       const formattedNumber = (number / 1000).toFixed(1);
@@ -234,6 +247,7 @@
     }
     return number;
   }
+
   function generateRandomProducts() {
     const productNames = ['Mouse 201', 'Mouse 205', 'Mouse 206', 'Mouse 207', 'Mouse 208']; // Example names
     randomProducts = productNames.map(name => {
@@ -248,12 +262,17 @@
     products = shuffle(randomProducts); // Replace the existing products array with new random data
     showCards(); // Display the new set of cards
   }
+
   function selectProduct(productId) {
     // Placeholder function for when a product is selected
     alert(productId + ' selected');
     // Here you would handle the logic for when a product card is selected
   }
+
   function correctCard(event) {
+    let reactionTime = new Date().getTime() - startTime;
+    arrayOfTimes[1].push(reactionTime);
+
     let card = event.currentTarget;
     card.classList.remove('bg-white');
     card.classList.add('bg-green-500');
@@ -262,10 +281,13 @@
         card.classList.remove('bg-green-500');
         card.classList.add('bg-white');
         generateRandomProducts();
-    }, 2000);
-}
+    }, 1000);
+  }
 
-function wrongCard(event) {
+  function wrongCard(event) {
+    let reactionTime = new Date().getTime() - startTime;
+    arrayOfTimes[1].push(reactionTime);
+
     let card = event.currentTarget;
     card.classList.remove('bg-white');
     card.classList.add('bg-red-500');
@@ -274,8 +296,8 @@ function wrongCard(event) {
         card.classList.remove('bg-red-500');
         card.classList.add('bg-white');
         generateRandomProducts();
-    }, 2000);
-}
+    }, 1000);
+  }
 </script>
 
 </body>
