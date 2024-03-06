@@ -322,53 +322,53 @@
   }
 
   function generateCSVContent(headers, dataRows) {
-  // Create CSV content with provided headers and rows
-  let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n";
-  dataRows.forEach(row => {
-    csvContent += row.join(",") + "\n";
-  });
-  return encodeURI(csvContent);
-}
-
-function generateReactionTimeCSV() {
-  // Get unique configurations
-  let uniqueConfigs = Array.from(new Set(arrayOfTimes[0]));
-
-  // Organize the reaction times under each configuration
-  let organizedData = {};
-  uniqueConfigs.forEach(config => {
-    organizedData[config] = [];
-  });
-
-  arrayOfTimes[0].forEach((config, index) => {
-    organizedData[config].push(arrayOfTimes[1][index]);
-  });
-
-  // Prepare CSV headers and rows
-  let headers = uniqueConfigs;
-  let dataRows = [];
-
-  // Assuming the number of trials is the same for each configuration
-  let trials = organizedData[uniqueConfigs[0]].length;
-
-  for (let i = 0; i < trials; i++) {
-    let row = headers.map(header => organizedData[header][i]);
-    dataRows.push(row);
+    // Create CSV content with provided headers and rows
+    let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n";
+    dataRows.forEach(row => {
+      csvContent += row.join(",") + "\n";
+    });
+    return encodeURI(csvContent);
   }
 
-  return generateCSVContent(headers, dataRows);
-}
+  function generateReactionTimeCSV() {
+    // Get unique configurations
+    let uniqueConfigs = Array.from(new Set(arrayOfTimes[0]));
 
-function generateAccuracyCSV(accuracyPercentages) {
-  // Prepare CSV headers and rows
-  let headers = accuracyPercentages.map(item => item.config);
-  let accuracyValues = accuracyPercentages.map(item => item.accuracy + '%');
+    // Organize the reaction times under each configuration
+    let organizedData = {};
+    uniqueConfigs.forEach(config => {
+      organizedData[config] = [];
+    });
 
-  // Accuracy data has only one row of values
-  let dataRows = [accuracyValues];
+    arrayOfTimes[0].forEach((config, index) => {
+      organizedData[config].push(arrayOfTimes[1][index]);
+    });
 
-  return generateCSVContent(headers, dataRows);
-}
+    // Prepare CSV headers and rows
+    let headers = uniqueConfigs;
+    let dataRows = [];
+
+    // Assuming the number of trials is the same for each configuration
+    let trials = organizedData[uniqueConfigs[0]].length;
+
+    for (let i = 0; i < trials; i++) {
+      let row = headers.map(header => organizedData[header][i]);
+      dataRows.push(row);
+    }
+
+    return generateCSVContent(headers, dataRows);
+  }
+
+  function generateAccuracyCSV(accuracyPercentages) {
+    // Prepare CSV headers and rows
+    let headers = accuracyPercentages.map(item => item.config);
+    let accuracyValues = accuracyPercentages.map(item => item.accuracy + '%');
+
+    // Accuracy data has only one row of values
+    let dataRows = [accuracyValues];
+
+    return generateCSVContent(headers, dataRows);
+  }
 
   function showResults(){
     let reactionTimeCSVUri = generateReactionTimeCSV();
@@ -405,6 +405,7 @@ function generateAccuracyCSV(accuracyPercentages) {
       resultsList.appendChild(resultItem);
     });
   }
+
 </script>
 
 </body>
