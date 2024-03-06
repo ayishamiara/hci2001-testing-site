@@ -111,12 +111,13 @@
 </head>
 <body>
     <header>
-        <h1 id="header">Welcome to the Online Shopping Product Card Testing App (Price)</h1>
+        <h1 id="header">Welcome to the Online Shopping Product Card Testing App</h1>
     </header>
     <div class="container">
         <div id="description">
           <p class="instructions">
               You will be given a task and after understanding the task, your reaction time and accuracy are measured.
+              The set of tasks will focus on the <b>price</b> feature of the product card.
           </p>
           <span class="button" onclick="loadExperiment()">Start Experiment</span>
         </div>
@@ -125,7 +126,7 @@
         </div>
     </div>
     <div id="task" class="task-display" onclick="startExperiment()">
-      <p>For the next series of products seen on the page,<br> click on the price "₱96"</p>
+      <p>For the next series of products seen on the page,<br> click on the price <b>₱96</b></p>
       <p class="start-instructions">Click mouse to start</p>
     </div>
 
@@ -389,7 +390,7 @@
 		let reactionTimeCSVUri = generateReactionTimeCSV();
 		let reactionTimeLink = document.createElement("a");
 		reactionTimeLink.href = reactionTimeCSVUri;
-		reactionTimeLink.download = "title_reaction_times.csv";
+		reactionTimeLink.download = "price_reaction_times.csv";
 		document.body.appendChild(reactionTimeLink);
 		reactionTimeLink.click();
 
@@ -397,7 +398,7 @@
 		let accuracyCSVUri = generateAccuracyCSV(calculateAccuracy());
 		let accuracyLink = document.createElement("a");
 		accuracyLink.href = accuracyCSVUri;
-		accuracyLink.download = "title_accuracy_results.csv";
+		accuracyLink.download = "price_accuracy_results.csv";
 		document.body.appendChild(accuracyLink);
 		accuracyLink.click();
 
@@ -418,8 +419,8 @@
 				<p>(Also please <b>allow</b> for multiple downloaded files)</p>
 				<br>
 				<ul>
-					<li><a href="${reactionTimeCSVUri}" download="title_reaction_times.csv">Download Reaction Time CSV</a></li>
-					<li><a href="${accuracyCSVUri}" download="title_accuracy_results.csv">Download Accuracy CSV</a></li>
+					<li><a href="${reactionTimeCSVUri}" download="price_reaction_times.csv">Download Reaction Time CSV</a></li>
+					<li><a href="${accuracyCSVUri}" download="price_accuracy_results.csv">Download Accuracy CSV</a></li>
 				</ul><br>
 				<p>Don't forget to send your results to the researcher, please. Thank you so much!</p>
 			</div>
