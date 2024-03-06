@@ -126,7 +126,7 @@
   let colorRand = [];
   let sizeRand = [];
 
-  for(i = 0; i < 1; i++){
+  for(i = 0; i < 3; i++){
     colorRand = colorRand.concat(shuffle(colors));
     sizeRand = sizeRand.concat(shuffle(sizes));
   }
@@ -186,13 +186,13 @@
 
     console.log(colorRand)
     
-    if(config < colors.length + sizes.length){
-      if(colorTitle < colors.length){
+    if(config < colorRand.length + sizeRand.length){
+      if(colorTitle < colorRand.length){
         aspectValue = colorRand[colorTitle];
         aspectType = 'color';
         colorTitle++;
       }
-      else if (sizeTitle < sizes.length){
+      else if (sizeTitle < sizeRand.length){
         aspectValue = sizeRand[sizeTitle];  
         aspectType = 'size';
         sizeTitle++;
@@ -320,39 +320,70 @@
     return accuracyPercentages;
   }
 
+  function generateCSVContent(headers, dataRows) {
+  // Create CSV content with provided headers and rows
+  let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n";
+  dataRows.forEach(row => {
+    csvContent += row.join(",") + "\n";
+  });
+  return encodeURI(csvContent);
+}
+
+function generateReactionTimeCSV() {
+  // Get unique configurations
+  let uniqueConfigs = Array.from(new Set(arrayOfTimes[0]));
+
+  // Organize the reaction times under each configuration
+  let organizedData = {};
+  uniqueConfigs.forEach(config => {
+    organizedData[config] = [];
+  });
+
+  arrayOfTimes[0].forEach((config, index) => {
+    organizedData[config].push(arrayOfTimes[1][index]);
+  });
+
+  // Prepare CSV headers and rows
+  let headers = uniqueConfigs;
+  let dataRows = [];
+
+  // Assuming the number of trials is the same for each configuration
+  let trials = organizedData[uniqueConfigs[0]].length;
+
+  for (let i = 0; i < trials; i++) {
+    let row = headers.map(header => organizedData[header][i]);
+    dataRows.push(row);
+  }
+
+  return generateCSVContent(headers, dataRows);
+}
+
+function generateAccuracyCSV(accuracyPercentages) {
+  // Prepare CSV headers and rows
+  let headers = accuracyPercentages.map(item => item.config);
+  let accuracyValues = accuracyPercentages.map(item => item.accuracy + '%');
+
+  // Accuracy data has only one row of values
+  let dataRows = [accuracyValues];
+
+  return generateCSVContent(headers, dataRows);
+}
+
   function showResults(){
-    //for downloading csv
-    let accuracyPercentages = calculateAccuracy();
+    let reactionTimeCSVUri = generateReactionTimeCSV();
+    let reactionTimeLink = document.createElement("a");
+    reactionTimeLink.href = reactionTimeCSVUri;
+    reactionTimeLink.download = "title_reaction_times.csv";
+    document.body.appendChild(reactionTimeLink);
+    reactionTimeLink.click();
 
-    var encodedUri, link;
-    let csvContent = "data:text/csv;charset=utf-8,Reaction times for Title Configuration\n";
-    arrayOfTimes.forEach(function (infoArray) {
-      let row = infoArray + ",";
-          csvContent += row + "\r\n";
-      });
-    encodedUri = encodeURI(csvContent);
-    
-    link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "titleResultsReactionTime.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    let csvContentAccuracy = "data:text/csv;charset=utf-8,Configuration,Accuracy\n"; // Add headers
-    accuracyPercentages.forEach(function(item) {
-        let row = item.config + "," + item.accuracy + "%\n"; // Format each row
-        csvContentAccuracy += row;
-    });
-    let encodedUriAccuracy = encodeURI(csvContentAccuracy);
-    
-    let linkAccuracy = document.createElement("a");
-    linkAccuracy.setAttribute("href", encodedUriAccuracy);
-    linkAccuracy.setAttribute("download", "titleResultsAccuracy.csv");
-    document.body.appendChild(linkAccuracy);
-    linkAccuracy.click();
-    document.body.removeChild(linkAccuracy); // Clean up
-
+    // Generate and download CSV for accuracy
+    let accuracyCSVUri = generateAccuracyCSV(calculateAccuracy());
+    let accuracyLink = document.createElement("a");
+    accuracyLink.href = accuracyCSVUri;
+    accuracyLink.download = "title_accuracy_results.csv";
+    document.body.appendChild(accuracyLink);
+    accuracyLink.click();
 
     //TO SHOW INTERFACE FOR RESULTS
     document.getElementById('card-test').style.display = 'none';
