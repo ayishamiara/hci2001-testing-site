@@ -135,7 +135,10 @@
   arrayOfTimes = [[],[]];
   arrayOfTimes[0] = colorRand.concat(sizeRand);
 
-  console.log(arrayOfTimes);
+  arrayOfAccuracy = [[],[]];
+  arrayOfAccuracy[0] = colorRand.concat(sizeRand);
+
+  // console.log(arrayOfTimes);
 
   let products = [
     { name: 'Mouse 201', price: 66, sold: '59', correct: false },
@@ -266,6 +269,7 @@
   function correctCard(event) {
     let reactionTime = new Date().getTime() - startTime;
     arrayOfTimes[1].push(reactionTime);
+    arrayOfAccuracy[1].push(1);
 
     let card = event.currentTarget;
     card.classList.remove('bg-white');
@@ -281,6 +285,7 @@
   function wrongCard(event) {
     let reactionTime = new Date().getTime() - startTime;
     arrayOfTimes[1].push(reactionTime);
+    arrayOfAccuracy[1].push(0);
 
     let card = event.currentTarget;
     card.classList.remove('bg-white');
@@ -293,8 +298,32 @@
     }, 1000);
   }
 
+  function calculateAccuracy(){
+    let accuracyResults = [];
+    arrayOfAccuracy[0].forEach((config, index) => {
+      if (!accuracyResults[config]) {
+        accuracyResults[config] = { correct: 0, total: 0 };
+      }
+      accuracyResults[config].total++;
+      if (arrayOfAccuracy[1][index] === 1) {
+        accuracyResults[config].correct++;
+      }
+    });
+
+    // Calculate accuracy percentage for each configuration
+    let accuracyPercentages = [];
+    for (const config in accuracyResults) {
+      const accuracy = (accuracyResults[config].correct / accuracyResults[config].total) * 100;
+      accuracyPercentages.push({ config: config, accuracy: accuracy.toFixed(2) });
+    }
+
+    return accuracyPercentages;
+  }
+
   function showResults(){
     //for downloading csv
+    let accuracyPercentages = calculateAccuracy();
+
     var encodedUri, link;
     let csvContent = "data:text/csv;charset=utf-8,Reaction times for Title Configuration\n";
     arrayOfTimes.forEach(function (infoArray) {
@@ -305,9 +334,25 @@
     
     link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "titleResults.csv");
+    link.setAttribute("download", "titleResultsReactionTime.csv");
     document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
+
+    let csvContentAccuracy = "data:text/csv;charset=utf-8,Configuration,Accuracy\n"; // Add headers
+    accuracyPercentages.forEach(function(item) {
+        let row = item.config + "," + item.accuracy + "%\n"; // Format each row
+        csvContentAccuracy += row;
+    });
+    let encodedUriAccuracy = encodeURI(csvContentAccuracy);
+    
+    let linkAccuracy = document.createElement("a");
+    linkAccuracy.setAttribute("href", encodedUriAccuracy);
+    linkAccuracy.setAttribute("download", "titleResultsAccuracy.csv");
+    document.body.appendChild(linkAccuracy);
+    linkAccuracy.click();
+    document.body.removeChild(linkAccuracy); // Clean up
+
 
     //TO SHOW INTERFACE FOR RESULTS
     document.getElementById('card-test').style.display = 'none';
