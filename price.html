@@ -111,7 +111,7 @@
 </head>
 <body>
     <header>
-        <h1 id="header">Welcome to the Online Shopping Product Card Testing App</h1>
+        <h1 id="header">Welcome to the Online Shopping Product Card Testing App (Price)</h1>
     </header>
     <div class="container">
         <div id="description">
@@ -125,7 +125,7 @@
         </div>
     </div>
     <div id="task" class="task-display" onclick="startExperiment()">
-      <p>For the next series of products seen on the page,<br> click on the product "Mouse 205"</p>
+      <p>For the next series of products seen on the page,<br> click on the price "₱96"</p>
       <p class="start-instructions">Click mouse to start</p>
     </div>
 
@@ -217,10 +217,10 @@
     // Iterate through each product and generate a card with the selected aspect changed
     products.forEach(product => {
       // Adjust the parameters based on the selected aspect
-      const nameColor = aspectType === 'color' ? aspectValue : "black"; // Only change color if aspect is color
-      const nameFontSize = aspectType === 'size' ? aspectValue : "14px"; // Only change size if aspect is size
-      const priceColor = "red"; // Keep price color unchanged
-      const priceFontSize = "12px"; // Keep price size unchanged
+      const nameColor =  "black"; // Keep title color unchanged
+      const nameFontSize = "14px"; // Keep title size unchanged
+      const priceColor = aspectType === 'color' ? aspectValue : "red"; // Only change color if aspect is color 
+      const priceFontSize  = aspectType === 'size' ? aspectValue : "12px"; // Only change size if aspect is size  
       const soldFontSize = "12px";
       const soldColor = "black"; // Keep sold color unchanged
       
@@ -257,13 +257,13 @@
   }
 
   function generateRandomProducts() {
-    const productNames = ['Mouse 201', 'Mouse 205', 'Mouse 206', 'Mouse 207', 'Mouse 208']; // Example names
-    randomProducts = productNames.map(name => {
+    const priceNames = ['66', '96', '95', '97', '99']; // Example names
+    randomProducts = priceNames.map(price => {
       return {
-        name: name,
-        price: Math.floor(Math.random() * 100) + 50, // Random price between 50 and 149
+        name: 'Mouse 205',
+        price: price, 
         sold: formatNumberAsK(Math.floor(Math.random() * 5000)), // Random sold between 1k and 6k
-        correct: name === 'Mouse 205' // Only one correct product for example
+        correct: price === '96' // Only one correct product for example
       };
     });
 

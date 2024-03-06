@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Card Testing App</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<style>
+  /* Basic Reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body, html {
+    height: 100%;
+  }
+
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #ececec;
+    text-align: center;
+  }
+
+  header {
+    width: 100%;
+    padding: 6vh 0;
+  }
+
+  header h1 {
+    font-size: 2em;
+    color: #333;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 5vh;
+    margin-left: 3vh;
+    margin-right: 3vh;
+  }
+
+  #description {
+    flex: 1;
+    margin: 0 20vh 0 0.5vh;
+    padding: 2vw;
+    text-align: justify;
+    font-size: 1.5em;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  #image {
+    flex: 1;
+    padding: 2vw;
+    /* Add styles for the image container */
+  }
+  .button {
+    float: left;
+    margin: 2vh 0 0 0;
+    padding: 1vh;
+    display: block;
+    background-color: #7a7a7a;
+    font-size: 3vh;
+    text-align: center;
+    color: #dfdfdf;
+  }
+
+  .button:hover {
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    #description, #image {
+      width: 80%; /* Full width on smaller screens */
+    }
+  }
+  .task-display {
+    display: none; /* Hidden by default */
+    margin: 15vh 15vh 0;
+    font-size: 5vh;
+    padding: 2vh;
+  }
+
+  .start-instructions {
+    margin-top: 4vh;
+    font-size: 3vh;
+  }
+
+  /* Add other styles as needed */
+	.results-container {
+		text-align: center;
+	}
+
+	.centered-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 20px;
+	}
+	
+	.gif {
+		width: 80%;
+	}
+
+</style>
+</head>
+<body>
+    <header>
+        <h1 id="header">Welcome to the Online Shopping Product Card Testing App (Title)</h1>
+    </header>
+    <div class="container">
+        <div id="description">
+          <p class="instructions">
+              You will be given a task and after understanding the task, your reaction time and accuracy are measured.
+          </p>
+          <span class="button" onclick="loadExperiment()">Start Experiment</span>
+        </div>
+        <div>
+          <img src="image 1.png" id="image">
+        </div>
+    </div>
+    <div id="task" class="task-display" onclick="startExperiment()">
+      <p>For the next series of products seen on the page,<br> click on the product "Mouse 205"</p>
+      <p class="start-instructions">Click mouse to start</p>
+    </div>
+
+<script>
+  let colorTitle = 0;
+  let sizeTitle = 0;
+  let config = 0;
+
+  const colors = ['red', 'orange', 'green', 'blue', 'black'];
+  const sizes = ['12px', '14px', '16px', '18px'];
+
+  let colorRand = [];
+  let sizeRand = [];
+
+  for(i = 0; i < 1; i++){
+    colorRand = colorRand.concat(shuffle(colors));
+    sizeRand = sizeRand.concat(shuffle(sizes));
+  }
+  
+  let startTime; 
+  arrayOfTimes = [[],[]];
+  arrayOfTimes[0] = colorRand.concat(sizeRand);
+
+  arrayOfAccuracy = [[],[]];
+  arrayOfAccuracy[0] = colorRand.concat(sizeRand);
+
+  // console.log(arrayOfTimes);
+
+  let products = [
+    { name: 'Mouse 201', price: 66, sold: '59', correct: false },
+    { name: 'Mouse 205', price: 79, sold: '127', correct: true },
+    { name: 'Mouse 206', price: 96, sold: '5.3k', correct: false },
+    { name: 'Mouse 207', price: 99, sold: '53', correct: false },
+    { name: 'Mouse 208', price: 23, sold: '5.3k', correct: false }
+    // Add more products as needed
+    ];
+  function loadExperiment() {
+    // Hide the header, description, image, and display the task instructions
+    document.getElementById('header').style.display = 'none';
+    document.getElementById('description').style.display = 'none';
+    document.getElementById('image').style.display = 'none';
+    document.getElementById('task').style.display = 'block';
+  }
+
+  function startExperiment() {
+    // This is where you would handle the start of the actual experiment
+    document.getElementById('task').style.display = 'none';
+
+    showCards();
+  }
+  function generateCard(product, nameColor, nameFontSize, priceColor, priceFontSize, soldColor, soldFontSize) {
+    // Sample call:
+    // generateCard(product, "position: absolute; bottom: 0; left: 0;", "blue", "20px", "position: absolute; top: 0; right: 0;", "green", "15px", "red");
+    // We can create a list of parameter values and iterate over it to generate cards
+    return `
+      <div class="bg-white shadow-md overflow-hidden flex flex-col h-full" id='card-test' onclick="${product.correct ? 'correctCard(event)' : 'wrongCard(event)'}">
+        <img class="w-full" src="image 2.png" alt="${product.name}">
+        <div class="p-2 pt-4 flex-1 flex flex-col justify-between text-left">
+          <h3 class="mb-4" style="color: ${nameColor}; font-size: ${nameFontSize};">${product.name}</h3>
+          <div class="flex justify-between items-end pt-4">
+            <span class="text-red-500" style="color: ${priceColor}; font-size: ${priceFontSize};">₱${product.price}</span>
+            <span class="text-gray-600" style="color: ${soldColor}; font-size: ${soldFontSize};">${product.sold} sold</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function showCards() {
+    startTime = new Date().getTime();
+    let cardsHTML = '<div class="flex justify-center items-center min-h-screen"><div class="grid grid-cols-1 md:grid-cols-5 gap-4 mx-8 my-4">';
+
+    console.log(colorRand)
+    
+    if(config < colorRand.length + sizeRand.length){
+      if(colorTitle < colorRand.length){
+        aspectValue = colorRand[colorTitle];
+        aspectType = 'color';
+        colorTitle++;
+      }
+      else if (sizeTitle < sizeRand.length){
+        aspectValue = sizeRand[sizeTitle];  
+        aspectType = 'size';
+        sizeTitle++;
+      }
+      config++;
+    }
+    
+    // Iterate through each product and generate a card with the selected aspect changed
+    products.forEach(product => {
+      // Adjust the parameters based on the selected aspect
+      const nameColor = aspectType === 'color' ? aspectValue : "black"; // Only change color if aspect is color
+      const nameFontSize = aspectType === 'size' ? aspectValue : "14px"; // Only change size if aspect is size
+      const priceColor = "red"; // Keep price color unchanged
+      const priceFontSize = "12px"; // Keep price size unchanged
+      const soldFontSize = "12px";
+      const soldColor = "black"; // Keep sold color unchanged
+      
+      cardsHTML += generateCard(product, nameColor, nameFontSize, priceColor, priceFontSize, soldColor, soldFontSize);
+    });
+
+    cardsHTML += '</div></div>';
+    document.body.innerHTML = cardsHTML;
+  }
+
+  function shuffle(array) {
+    let currentIndex = array.length-1,  randomIndex;
+
+    // While there remain elements to shuffle...
+    do{
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }while (currentIndex !== 0);
+
+    return array;
+  }
+
+  function formatNumberAsK(number) {
+    if (number>1000){
+      const formattedNumber = (number / 1000).toFixed(1);
+      return formattedNumber.endsWith('.0') ? formattedNumber.slice(0, -2) + 'k' : formattedNumber + 'k';
+    }
+    return number;
+  }
+
+  function generateRandomProducts() {
+    const productNames = ['Mouse 201', 'Mouse 205', 'Mouse 206', 'Mouse 207', 'Mouse 208']; // Example names
+    randomProducts = productNames.map(name => {
+      return {
+        name: name,
+        price: Math.floor(Math.random() * 100) + 50, // Random price between 50 and 149
+        sold: formatNumberAsK(Math.floor(Math.random() * 5000)), // Random sold between 1k and 6k
+        correct: name === 'Mouse 205' // Only one correct product for example
+      };
+    });
+
+    products = shuffle(randomProducts); // Replace the existing products array with new random data
+    if(config < colorRand.length + sizeRand.length){
+      showCards(); // Display the new set of cards
+    }
+    else
+      showResults();
+  }
+
+  function selectProduct(productId) {
+    // Placeholder function for when a product is selected
+    alert(productId + ' selected');
+    // Here you would handle the logic for when a product card is selected
+  }
+
+  function correctCard(event) {
+    let reactionTime = new Date().getTime() - startTime;
+    arrayOfTimes[1].push(reactionTime);
+    arrayOfAccuracy[1].push(1);
+
+    let card = event.currentTarget;
+    card.classList.remove('bg-white');
+    card.classList.add('bg-green-500');
+    
+    setTimeout(function() {
+        card.classList.remove('bg-green-500');
+        card.classList.add('bg-white');
+        generateRandomProducts();
+    }, 1000);
+  }
+
+  function wrongCard(event) {
+    let reactionTime = new Date().getTime() - startTime;
+    arrayOfTimes[1].push(reactionTime);
+    arrayOfAccuracy[1].push(0);
+
+    let card = event.currentTarget;
+    card.classList.remove('bg-white');
+    card.classList.add('bg-red-500');
+
+    setTimeout(function() {
+        card.classList.remove('bg-red-500');
+        card.classList.add('bg-white');
+        generateRandomProducts();
+    }, 1000);
+  }
+
+  function calculateAccuracy(){
+    let accuracyResults = [];
+    arrayOfAccuracy[0].forEach((config, index) => {
+      if (!accuracyResults[config]) {
+        accuracyResults[config] = { correct: 0, total: 0 };
+      }
+      accuracyResults[config].total++;
+      if (arrayOfAccuracy[1][index] === 1) {
+        accuracyResults[config].correct++;
+      }
+    });
+
+    // Calculate accuracy percentage for each configuration
+    let accuracyPercentages = [];
+    for (const config in accuracyResults) {
+      const accuracy = (accuracyResults[config].correct / accuracyResults[config].total) * 100;
+      accuracyPercentages.push({ config: config, accuracy: accuracy.toFixed(2) });
+    }
+
+    return accuracyPercentages;
+  }
+
+  function generateCSVContent(headers, dataRows) {
+    // Create CSV content with provided headers and rows
+    let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n";
+    dataRows.forEach(row => {
+      csvContent += row.join(",") + "\n";
+    });
+    return encodeURI(csvContent);
+  }
+
+  function generateReactionTimeCSV() {
+    // Get unique configurations
+    let uniqueConfigs = Array.from(new Set(arrayOfTimes[0]));
+
+    // Organize the reaction times under each configuration
+    let organizedData = {};
+    uniqueConfigs.forEach(config => {
+      organizedData[config] = [];
+    });
+
+    arrayOfTimes[0].forEach((config, index) => {
+      organizedData[config].push(arrayOfTimes[1][index]);
+    });
+
+    // Prepare CSV headers and rows
+    let headers = uniqueConfigs;
+    let dataRows = [];
+
+    // Assuming the number of trials is the same for each configuration
+    let trials = organizedData[uniqueConfigs[0]].length;
+
+    for (let i = 0; i < trials; i++) {
+      let row = headers.map(header => organizedData[header][i]);
+      dataRows.push(row);
+    }
+
+    return generateCSVContent(headers, dataRows);
+  }
+
+  function generateAccuracyCSV(accuracyPercentages) {
+    // Prepare CSV headers and rows
+    let headers = accuracyPercentages.map(item => item.config);
+    let accuracyValues = accuracyPercentages.map(item => item.accuracy + '%');
+
+    // Accuracy data has only one row of values
+    let dataRows = [accuracyValues];
+
+    return generateCSVContent(headers, dataRows);
+  }
+
+	function showResults() {
+		// Generate and download CSV for reaction times
+		let reactionTimeCSVUri = generateReactionTimeCSV();
+		let reactionTimeLink = document.createElement("a");
+		reactionTimeLink.href = reactionTimeCSVUri;
+		reactionTimeLink.download = "title_reaction_times.csv";
+		document.body.appendChild(reactionTimeLink);
+		reactionTimeLink.click();
+
+		// Generate and download CSV for accuracy
+		let accuracyCSVUri = generateAccuracyCSV(calculateAccuracy());
+		let accuracyLink = document.createElement("a");
+		accuracyLink.href = accuracyCSVUri;
+		accuracyLink.download = "title_accuracy_results.csv";
+		document.body.appendChild(accuracyLink);
+		accuracyLink.click();
+
+		// Hide the test page and display the instructional result page
+		document.getElementById('card-test').style.display = 'none';
+		document.body.innerHTML = `
+			<div class="results-container max-w-4xl mx-auto py-8 px-4">
+				<h2 class="text-2xl font-bold mb-4">Congratulations, You are done!</h2>
+				<div class="centered-content">
+					<div class="gif-container">
+						<img src="yippee.gif" alt="Congratulations">
+					</div>
+					<div class="instructions-container">
+						<img src="instructions.png" alt="Instructions">
+					</div>
+				</div>
+				<p>Kindly download the prompted files:</p>
+				<p>(Also please <b>allow</b> for multiple downloaded files)</p>
+				<br>
+				<ul>
+					<li><a href="${reactionTimeCSVUri}" download="title_reaction_times.csv">Download Reaction Time CSV</a></li>
+					<li><a href="${accuracyCSVUri}" download="title_accuracy_results.csv">Download Accuracy CSV</a></li>
+				</ul><br>
+				<p>Don't forget to send your results to the researcher, please. Thank you so much!</p>
+			</div>
+		`;
+	}
+
+
+</script>
+
+</body>
+</html>
