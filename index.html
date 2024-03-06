@@ -199,9 +199,6 @@
       }
       config++;
     }
-    else{//put an ELSE statement here to exit the testing loop and go to the results display page
-      showResults()
-    }
     
     // Iterate through each product and generate a card with the selected aspect changed
     products.forEach(product => {
@@ -257,7 +254,11 @@
     });
 
     products = shuffle(randomProducts); // Replace the existing products array with new random data
-    showCards(); // Display the new set of cards
+    if(config < colorRand.length + sizeRand.length){
+      showCards(); // Display the new set of cards
+    }
+    else
+      showResults();
   }
 
   function selectProduct(productId) {
