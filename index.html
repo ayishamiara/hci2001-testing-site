@@ -118,20 +118,22 @@
 <script>
   let colorTitle = 0;
   let sizeTitle = 0;
-  let positionTitle =0;
   let config = 0;
 
   const colors = ['red', 'orange', 'green', 'blue', 'black'];
   const sizes = ['12px', '14px', '16px', '18px'];
-  const positions = ['upper-left', 'upper-right', 'lower-left', 'lower-right', 'middle'];
 
-  let colorRand = shuffle(colors);
-  let sizeRand = shuffle(sizes);
-  let positionRand = shuffle(positions);
+  let colorRand = [];
+  let sizeRand = [];
 
+  for(i = 0; i < 1; i++){
+    colorRand = colorRand.concat(shuffle(colors));
+    sizeRand = sizeRand.concat(shuffle(sizes));
+  }
+  
   let startTime; 
   arrayOfTimes = [[],[]];
-  arrayOfTimes[0] = colorRand.concat(sizeRand, positionRand);
+  arrayOfTimes[0] = colorRand.concat(sizeRand);
 
   console.log(arrayOfTimes);
 
@@ -157,17 +159,17 @@
 
     showCards();
   }
-  function generateCard(product, namePosition, nameColor, nameFontSize, pricePosition, priceColor, priceFontSize, soldColor, soldFontSize) {
+  function generateCard(product, nameColor, nameFontSize, priceColor, priceFontSize, soldColor, soldFontSize) {
     // Sample call:
     // generateCard(product, "position: absolute; bottom: 0; left: 0;", "blue", "20px", "position: absolute; top: 0; right: 0;", "green", "15px", "red");
     // We can create a list of parameter values and iterate over it to generate cards
     return `
-      <div class="bg-white shadow-md overflow-hidden flex flex-col h-full" onclick="${product.correct ? 'correctCard(event)' : 'wrongCard(event)'}">
+      <div class="bg-white shadow-md overflow-hidden flex flex-col h-full" id='card-test' onclick="${product.correct ? 'correctCard(event)' : 'wrongCard(event)'}">
         <img class="w-full" src="image 2.png" alt="${product.name}">
         <div class="p-2 pt-4 flex-1 flex flex-col justify-between text-left">
-          <h3 class="mb-4" style="color: ${nameColor}; ${namePosition}; font-size: ${nameFontSize};">${product.name}</h3>
+          <h3 class="mb-4" style="color: ${nameColor}; font-size: ${nameFontSize};">${product.name}</h3>
           <div class="flex justify-between items-end pt-4">
-            <span class="text-red-500" style="color: ${priceColor}; ${pricePosition}; font-size: ${priceFontSize};">₱${product.price}</span>
+            <span class="text-red-500" style="color: ${priceColor}; font-size: ${priceFontSize};">₱${product.price}</span>
             <span class="text-gray-600" style="color: ${soldColor}; font-size: ${soldFontSize};">${product.sold} sold</span>
           </div>
         </div>
@@ -181,7 +183,7 @@
 
     console.log(colorRand)
     
-    if(config < colors.length + sizes.length + positions.length){
+    if(config < colors.length + sizes.length){
       if(colorTitle < colors.length){
         aspectValue = colorRand[colorTitle];
         aspectType = 'color';
@@ -192,31 +194,23 @@
         aspectType = 'size';
         sizeTitle++;
       }
-      else if (positionTitle < positions.length){
-        aspectValue = positionRand[positionTitle];
-        aspectType = 'position';
-        positionTitle++;
-      }
       config++;
     }
     else{//put an ELSE statement here to exit the testing loop and go to the results display page
-      
+      showResults()
     }
     
-
     // Iterate through each product and generate a card with the selected aspect changed
     products.forEach(product => {
       // Adjust the parameters based on the selected aspect
-      const namePosition = aspectType === 'position' ? aspectValue : "none"; // Only change position if aspect is position
       const nameColor = aspectType === 'color' ? aspectValue : "black"; // Only change color if aspect is color
       const nameFontSize = aspectType === 'size' ? aspectValue : "14px"; // Only change size if aspect is size
-      const pricePosition = "none"; // Keep price position unchanged
       const priceColor = "red"; // Keep price color unchanged
       const priceFontSize = "12px"; // Keep price size unchanged
       const soldFontSize = "12px";
       const soldColor = "black"; // Keep sold color unchanged
       
-      cardsHTML += generateCard(product, namePosition, nameColor, nameFontSize, pricePosition, priceColor, priceFontSize, soldColor, soldFontSize);
+      cardsHTML += generateCard(product, nameColor, nameFontSize, priceColor, priceFontSize, soldColor, soldFontSize);
     });
 
     cardsHTML += '</div></div>';
@@ -297,6 +291,42 @@
         card.classList.add('bg-white');
         generateRandomProducts();
     }, 1000);
+  }
+
+  function showResults(){
+    //for downloading csv
+    var encodedUri, link;
+    let csvContent = "data:text/csv;charset=utf-8,Reaction times for Title Configuration\n";
+    arrayOfTimes.forEach(function (infoArray) {
+      let row = infoArray + ",";
+          csvContent += row + "\r\n";
+      });
+    encodedUri = encodeURI(csvContent);
+    
+    link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "titleResults.csv");
+    document.body.appendChild(link);
+    link.click();
+
+    //TO SHOW INTERFACE FOR RESULTS
+    document.getElementById('card-test').style.display = 'none';
+    document.body.innerHTML = '<div class="results-container max-w-4xl mx-auto py-8 px-4"><h2 class="text-2xl font-bold mb-4">Your Results</h2><div id="resultsList" class="flex flex-col"></div></div>';
+
+    // Container for results
+    const resultsList = document.getElementById('resultsList');
+
+    // Generating HTML content for each reaction time
+    arrayOfTimes[1].forEach((time, index) => {
+      const config = arrayOfTimes[0][index];
+      const timeInSeconds = (time / 1000).toFixed(2); // Convert milliseconds to seconds, round to 2 decimal places
+      
+      const resultItem = document.createElement("div");
+      resultItem.classList.add("p-4", "border", "border-gray-300", "rounded-lg", "mb-2", "flex", "justify-between", "items-center");
+      resultItem.innerHTML = `<span>Configuration: ${config} - Reaction Time: ${timeInSeconds} seconds</span>`;
+      
+      resultsList.appendChild(resultItem);
+    });
   }
 </script>
 
