@@ -19,3 +19,6 @@ Authors: Chua Ching | Deculawan | Dytoc | Ileto | Tan | Villa
 2. In order to run the first test: Double-click on the "price.html" and perform the actions specified on the page
 3. In order to run the first test: Double-click on the "amtSold.html" and perform the actions specified on the page
 * Note that each HTML has CSV files that will be downloaded which measure the time and accuracy of the user
+
+
+Data of the participants can be accessed here: https://docs.google.com/spreadsheets/d/11KyHdz8-fHRuCgTcEm7QHa5Z4y3jPZvEQ4A2P732vVs/edit?usp=sharing
