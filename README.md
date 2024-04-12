@@ -4,7 +4,7 @@ Authors: Chua Ching | Deculawan | Dytoc | Ileto | Tan | Villa
 
 ## Step 1: Download the Zip file from the Repository
 
-1. Navigate to the main page of the GitHub Repository [https://github.com/ayishamiara/hci2001-testing-site] (https://github.com/ayishamiara/hci2001-testing-site)
+1. Navigate to the main page of the GitHub Repository https://github.com/ayishamiara/hci2001-testing-site
 2. Click on the "Code" Dropdown
 3. Click on "Download Zip"
 
